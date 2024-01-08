@@ -11,19 +11,19 @@ set +x
 echo 'The following complex command extracts the value of the <name/> element'
 echo 'within <project/> of your Java/Maven project''s "pom.xml" file.'
 set -x
-NAME=$(mvn help:evaluate -Dexpression=project.name -q -DforceStdout)
+NAME=$(mvn help:evaluate -Dexpression=project.name -q -DforceStdout | sed $'s/\e\[[0-9;]*m//g')
 echo ${NAME}
 set +x
 
 echo 'The following complex command behaves similarly to the previous one but'
 echo 'extracts the value of the <version/> element within <project/> instead.'
 set -x
-VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout | sed $'s/\e\[[0-9;]*m//g')
 echo ${VERSION}
 set +x
 
 echo 'The following command runs and outputs the execution of your Java'
 echo 'application (which Jenkins built using Maven) to the Jenkins UI.'
 set -x
-ls target/ 
-java -jar target/${NAME}-${VERSION}.jar
+ls target/
+java -jar "target/${NAME}-${VERSION}.jar"
